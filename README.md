@@ -84,3 +84,23 @@ Mọi thắc mắc về cuộc thi xin liên hệ Ban tổ chức.
 ## Giấy phép
 
 Mã nguồn được phát hành theo [giấy phép MIT](LICENSE). Bộ dữ liệu chỉ được sử dụng cho mục đích học tập trong khuôn khổ NeoRAG Cup 2026; bản quyền nội dung gốc thuộc về các CLB và các nguồn được ghi trong `data/sources.csv`.
+
+## Pipeline hybrid của thí sinh
+
+Hệ thống gồm BM25 + BGE-m3/Qdrant, MiniLM reranker local, fusion min–max và Claude Haiku qua gateway BTC. Câu trả lời có citation và xử lý trường hợp thiếu bằng chứng. Cấu hình mặc định hybrid: `configs/hybrid.toml` (accuracy v4, prompt tập trung hơn; train 85,34, validation 85,11, chưa có Public v4).
+
+**Public tốt nhất đã xác nhận: 74,74 (v3)**, theo log người dùng cung cấp. ZIP tương ứng: `outputs/hybrid_v3_public_submission.zip`. Submission v4 mới: `outputs/hybrid_v4_public_submission.zip`; cần nộp để kiểm chứng Public.
+
+```bash
+bash scripts/demo.sh
+```
+
+Launcher bật Qdrant và chọn đúng hybrid; chạy app trực tiếp không đặt `NEORAG_PIPELINE` vẫn dùng baseline starter kit. Embedding gateway và generation có thể tốn API khi cache miss.
+
+- [Cài đặt, vận hành và Private Test](docs/FINAL.md)
+- [Kết quả v3 và đánh đổi](docs/accuracy-v3.md)
+- [Thử nghiệm generation v4](docs/accuracy-v4.md)
+- [Nội dung trình bày](docs/PITCH.md)
+- [Nhật ký kiến trúc và các lần kiểm chứng](NOTE.md)
+
+Kiểm tra offline: `.venv/bin/python -m pytest` và `.venv/bin/ruff check src tests app scripts`. Bộ chấm chính thức giữ nguyên; không gán nhãn hoặc hard-code đáp án test.
